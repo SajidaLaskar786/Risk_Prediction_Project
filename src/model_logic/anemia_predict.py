@@ -62,10 +62,9 @@ def predict_anemia(data: dict):
         # ================================
         # FEATURE ORDER (VERY IMPORTANT)
         # ================================
-        # FORCE match training
+       # FORCE match training
         feature_order = list(scaler.feature_names_in_)
         df = df[feature_order]
-
 
         # ================================
         # SCALING
@@ -91,7 +90,8 @@ def predict_anemia(data: dict):
         # RETURN
         # ================================
         return {
-            "risk": result
+            "risk": result,
+            "bmi": round(bmi, 2)
         }
 
     except KeyError as e:

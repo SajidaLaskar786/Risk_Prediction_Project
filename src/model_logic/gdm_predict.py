@@ -87,13 +87,11 @@ def predict_gdm(data: dict):
         # ================================
         # 🔥 HYBRID LOGIC
         # ================================
-
-        # ONLY critical medical override
         if (
-            cleaned["Waist_cm"] > 90 and 
-            (cleaned["BP_Systolic"] > 140 or cleaned["BP_Diastolic"] > 90)
+        cleaned["Waist_cm"] > 90 and 
+        (cleaned["BP_Systolic"] > 140 or cleaned["BP_Diastolic"] > 90)
         ):
-            result = "High"
+         result = "High"
 
         # ================================
         # RETURN RESULT
