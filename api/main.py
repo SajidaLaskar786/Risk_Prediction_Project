@@ -4,7 +4,17 @@ from pydantic import BaseModel, Field
 from src.model_logic.gdm_predict import predict_gdm
 from src.model_logic.anemia_predict import predict_anemia
 
+from fastapi.middleware.cors import CORSMiddleware
+
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # allow all (for development)
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 
