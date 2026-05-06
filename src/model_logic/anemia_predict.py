@@ -90,8 +90,7 @@ def predict_anemia(data: dict):
         # RETURN
         # ================================
         return {
-            "risk": result,
-            "bmi": round(bmi, 2)
+            "risk": result
         }
 
     except KeyError as e:
