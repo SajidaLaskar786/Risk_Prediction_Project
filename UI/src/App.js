@@ -19,22 +19,20 @@ function App() {
     dark: false,
 
     // ANEMIA
-    Height_cm: "",
-    Weight_kg: "",
-    Iron_Intake: "",
-    Diet_Quality: "",
-    Fatigue: "",
-    Dizziness: "",
-    Pale_Eyelids: "",
-    Pale_Nails: "",
-    Tongue_Color: "",
-    Anemia_History: ""
+    height_cm: "",
+    weight_kg: "",
+    iron_intake: "",
+    diet_quality: "",
+    fatigue: false,
+    dizziness: false,
+    pale_eyelids: false,
+    pale_nails: false,
+    tongue: "",
+    history: false
   });
 
   const [result, setResult] = useState(null);
-  const [loading, setLoading] = useState(false);
 
-  // handle input change
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
 
@@ -44,58 +42,56 @@ function App() {
     });
   };
 
-  // API call
+  const handleSelectBool = (name, value) => {
+    setFormData({
+      ...formData,
+      [name]: value === "Yes"
+    });
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
 
-    try {
-      const response = await fetch("http://127.0.0.1:8000/mht", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          ...formData,
+    const response = await fetch("http://127.0.0.1:8000/mht", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        ...formData,
 
-          // convert numbers
-          age: Number(formData.age),
-          gravida: Number(formData.gravida),
-          gest_weeks: Number(formData.gest_weeks),
-          waist: Number(formData.waist),
-          bp_sys: Number(formData.bp_sys),
-          bp_dia: Number(formData.bp_dia),
-          Height_cm: Number(formData.Height_cm),
-          Weight_kg: Number(formData.Weight_kg)
-        })
-      });
+        // convert numbers
+        age: Number(formData.age),
+        gravida: Number(formData.gravida),
+        gest_weeks: Number(formData.gest_weeks),
+        waist: Number(formData.waist),
+        bp_sys: Number(formData.bp_sys),
+        bp_dia: Number(formData.bp_dia),
+        height_cm: Number(formData.height_cm),
+        weight_kg: Number(formData.weight_kg)
+      })
+    });
 
-      const data = await response.json();
-      setResult(data);
-      setLoading(false);
-
-    } catch (error) {
-      console.error(error);
-      alert("API Error");
-      setLoading(false);
-    }
+    const data = await response.json();
+    console.log(data);
+    setResult(data);
   };
 
   return (
-    <div style={{ padding: "20px", backgroundColor: "#e8f5e9" }}>
-      <h2 style={{ color: "green" }}>Maternal Health Predictor</h2>
+    <div style={{ padding: "20px", background: "#e8f5e9" }}>
+      <h2>Maternal Health Predictor</h2>
 
       <form onSubmit={handleSubmit}>
 
         {/* ---------------- GDM ---------------- */}
-        <h3>GDM Details</h3>
+        <h3>GDM</h3>
 
         <input name="age" placeholder="Age" onChange={handleChange} />
         <input name="gravida" placeholder="Gravida" onChange={handleChange} />
         <input name="gest_weeks" placeholder="Gest Weeks" onChange={handleChange} />
 
         <label>
-          Previous GDM
+          Prev GDM
           <input type="checkbox" name="prev_gdm" onChange={handleChange} />
         </label>
 
@@ -104,105 +100,104 @@ function App() {
           <input type="checkbox" name="family" onChange={handleChange} />
         </label>
 
-        <input name="waist" placeholder="Waist (cm)" onChange={handleChange} />
-        <input name="bp_sys" placeholder="BP Systolic" onChange={handleChange} />
-        <input name="bp_dia" placeholder="BP Diastolic" onChange={handleChange} />
+        <label>
+          PCOD
+          <input type="checkbox" name="pcod" onChange={handleChange} />
+        </label>
 
-        <input name="activity" placeholder="Activity (Active/Moderate/Never)" onChange={handleChange} />
+        <input name="waist" placeholder="Waist" onChange={handleChange} />
+        <input name="bp_sys" placeholder="BP Sys" onChange={handleChange} />
+        <input name="bp_dia" placeholder="BP Dia" onChange={handleChange} />
+
+        <input name="activity" placeholder="Activity" onChange={handleChange} />
 
         <label>
-          Excess Thirst
+          Thirst
           <input type="checkbox" name="thirst" onChange={handleChange} />
         </label>
 
         <label>
-          Frequent Urination
+          Urination
           <input type="checkbox" name="urination" onChange={handleChange} />
         </label>
 
         <label>
-          Excess Hunger
+          Hunger
           <input type="checkbox" name="hunger" onChange={handleChange} />
         </label>
 
         <label>
-          Dark Skin Patches
+          Dark Skin
           <input type="checkbox" name="dark" onChange={handleChange} />
         </label>
 
         {/* ---------------- ANEMIA ---------------- */}
-        <h3>Anemia Details</h3>
+        <h3>Anemia</h3>
 
-        <input name="Height_cm" placeholder="Height (cm)" onChange={handleChange} />
-        <input name="Weight_kg" placeholder="Weight (kg)" onChange={handleChange} />
+        <input name="height_cm" placeholder="Height" onChange={handleChange} />
+        <input name="weight_kg" placeholder="Weight" onChange={handleChange} />
 
-        <select name="Iron_Intake" onChange={handleChange}>
-          <option>Iron Intake</option>
-          <option>Good</option>
-          <option>Average</option>
-          <option>Poor</option>
+        <select name="iron_intake" onChange={handleChange}>
+          <option value="">Iron Intake</option>
+          <option value="Good">Good</option>
+          <option value="Average">Average</option>
+          <option value="Poor">Poor</option>
         </select>
 
-        <select name="Diet_Quality" onChange={handleChange}>
-          <option>Diet Quality</option>
-          <option>Good</option>
-          <option>Average</option>
-          <option>Poor</option>
+        <select name="diet_quality" onChange={handleChange}>
+          <option value="">Diet Quality</option>
+          <option value="Good">Good</option>
+          <option value="Average">Average</option>
+          <option value="Poor">Poor</option>
         </select>
 
-        <select name="Fatigue" onChange={handleChange}>
+        <select onChange={(e) => handleSelectBool("fatigue", e.target.value)}>
           <option>Fatigue</option>
           <option>Yes</option>
           <option>No</option>
         </select>
 
-        <select name="Dizziness" onChange={handleChange}>
+        <select onChange={(e) => handleSelectBool("dizziness", e.target.value)}>
           <option>Dizziness</option>
           <option>Yes</option>
           <option>No</option>
         </select>
 
-        <select name="Pale_Eyelids" onChange={handleChange}>
+        <select onChange={(e) => handleSelectBool("pale_eyelids", e.target.value)}>
           <option>Pale Eyelids</option>
           <option>Yes</option>
           <option>No</option>
         </select>
 
-        <select name="Pale_Nails" onChange={handleChange}>
+        <select onChange={(e) => handleSelectBool("pale_nails", e.target.value)}>
           <option>Pale Nails</option>
           <option>Yes</option>
           <option>No</option>
         </select>
 
-        <select name="Tongue_Color" onChange={handleChange}>
-          <option>Tongue Color</option>
-          <option>Normal</option>
-          <option>Pale</option>
-          <option>Very Pale</option>
+        <select name="tongue" onChange={handleChange}>
+          <option value="">Tongue Color</option>
+          <option value="Normal">Normal</option>
+          <option value="Pale">Pale</option>
+          <option value="Very Pale">Very Pale</option>
         </select>
 
-        <select name="Anemia_History" onChange={handleChange}>
+        <select onChange={(e) => handleSelectBool("history", e.target.value)}>
           <option>Anemia History</option>
           <option>Yes</option>
           <option>No</option>
         </select>
 
         <br /><br />
-
-        <button type="submit" style={{ padding: "10px", background: "green", color: "white" }}>
-          Predict
-        </button>
-
+        <button type="submit">Predict</button>
       </form>
 
       {/* RESULT */}
-      {loading && <p>Loading...</p>}
-
       {result && (
         <div style={{ marginTop: "20px", background: "white", padding: "10px" }}>
           <h3>Result:</h3>
-          <p>GDM Risk: {result.gdm.risk}</p>
-          <p>Anemia Risk: {result.anemia.risk}</p>
+          <p>GDM Risk: {result?.gdm?.risk}</p>
+          <p>Anemia Risk: {result?.anemia?.risk}</p>
         </div>
       )}
     </div>

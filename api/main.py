@@ -1,23 +1,22 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, Field
+from fastapi.middleware.cors import CORSMiddleware
 
 from src.model_logic.gdm_predict import predict_gdm
 from src.model_logic.anemia_predict import predict_anemia
 
-from fastapi.middleware.cors import CORSMiddleware
-
 app = FastAPI()
 
+# CORS (important for React)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # allow all (for development)
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-
-
+# ---------------- INPUT MODEL ----------------
 class MaternalHealthInput(BaseModel):
     # GDM
     age: int = Field(gt=0, le=100)
@@ -35,7 +34,7 @@ class MaternalHealthInput(BaseModel):
     hunger: bool
     dark: bool
 
-    # Anemia
+    # ANEMIA
     height_cm: float = Field(gt=0)
     weight_kg: float = Field(gt=0)
     iron_intake: str
@@ -48,7 +47,7 @@ class MaternalHealthInput(BaseModel):
     history: bool
 
 
-
+# ---------------- PREPARE INPUT ----------------
 def prepare_gdm_input(data: MaternalHealthInput):
     return {
         "Age": data.age,
@@ -83,33 +82,10 @@ def prepare_anemia_input(data: MaternalHealthInput):
     }
 
 
-
+# ---------------- ROUTES ----------------
 @app.get("/")
 def home():
     return {"message": "Maternal Health API running 🚀"}
-
-
-
-@app.post("/gdm")
-def gdm_endpoint(data: MaternalHealthInput):
-    try:
-        gdm_input = prepare_gdm_input(data)
-        result = predict_gdm(gdm_input)
-        return {"gdm_result": result}
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
-
-
-
-@app.post("/anemia")
-def anemia_endpoint(data: MaternalHealthInput):
-    try:
-        anemia_input = prepare_anemia_input(data)
-        result = predict_anemia(anemia_input)
-        return {"anemia_result": result}
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
-
 
 
 @app.post("/mht")
