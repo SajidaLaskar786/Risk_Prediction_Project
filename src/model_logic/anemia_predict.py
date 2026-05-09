@@ -6,6 +6,7 @@ import os
 # LOAD MODELS (one-time)
 # ================================
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
+print(f"*********Loading models from: {BASE_DIR} *****")
 
 model = joblib.load(os.path.join(BASE_DIR, "models/trained_models/anemia_model.pkl"))
 scaler = joblib.load(os.path.join(BASE_DIR, "models/trained_models/anemia_scaler.pkl"))
