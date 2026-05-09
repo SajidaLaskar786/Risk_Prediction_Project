@@ -5,10 +5,10 @@ from difflib import get_close_matches
 # ================================
 # LOAD MODELS (only once)
 # ================================
-model = joblib.load("Models/trained_models/gdm_model.pkl")
-scaler = joblib.load("Models/trained_models/gdm_scaler.pkl")
-encoders = joblib.load("Models/trained_models/gdm_encoders.pkl")
-label_encoder = joblib.load("Models/trained_models/gdm_target_encoder.pkl")
+model = joblib.load("models/trained_models/gdm_model.pkl")
+scaler = joblib.load("models/trained_models/gdm_scaler.pkl")
+encoders = joblib.load("models/trained_models/gdm_encoders.pkl")
+label_encoder = joblib.load("models/trained_models/gdm_target_encoder.pkl")
 
 # ================================
 # SMART INPUT (TYPO HANDLING)
