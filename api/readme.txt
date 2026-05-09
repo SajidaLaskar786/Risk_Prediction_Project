@@ -34,3 +34,9 @@ Invoke-RestMethod -Uri "http://127.0.0.1:8000/mht" `
   "tongue":"Normal",
   "history":false
 }'
+
+steps for new users:(mac commands)
+1.python3 -m venv venv
+2.source venv/bin/activate
+3.uvicorn api.main:app --reload
+4.pip3 install -r requirement.txt
