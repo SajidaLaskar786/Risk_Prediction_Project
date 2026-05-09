@@ -2,3 +2,8 @@ fastapi
 pydantic
 python-dotenv
 uvicorn
+joblib
+matplotlib
+pandas
+numpy
+scikit-learn
