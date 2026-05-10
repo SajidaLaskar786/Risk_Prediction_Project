@@ -1,0 +1,13 @@
+sudo apt update -y
+sudo apt install -y nodejs npm
+sudo apt install -y python3-venv python3-full
+git clone https://github.com/SajidaLaskar786/Risk_Prediction_Project.git
+cd Risk_Prediction_Project
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirement.txt
+uvicorn api.main:app --host 0.0.0.0 --port 8000
+
+
+to check public ip from withen the ec2 m/c 
+curl ifconfig.me
