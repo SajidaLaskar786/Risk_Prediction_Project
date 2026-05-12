@@ -81,7 +81,7 @@ function App() {
     try {
       setLoading(true);
 
-      const response = await fetch("http://127.0.0.1:8000/mht", {
+      const response = await fetch(`${process.env.REACT_APP_MODEL_SERVICE_URL}/mht`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"

@@ -1,0 +1,167 @@
+#!/bin/bash
+
+set -e
+
+# Log all output
+exec > /var/log/user-data.log 2>&1
+
+echo "Starting EC2 setup..."
+
+########################################
+# Update packages
+########################################
+
+sudo apt update -y
+
+########################################
+# Install required software
+########################################
+
+sudo apt install -y \
+    python3-pip \
+    python3-venv \
+    git \
+    nginx
+
+########################################
+# Install Node.js 22
+########################################
+
+curl -fsSL https://deb.nodesource.com/setup_22.x | sudo -E bash -
+sudo apt-get install -y nodejs
+
+########################################
+# Start and enable nginx
+########################################
+
+sudo systemctl enable nginx
+sudo systemctl start nginx
+
+########################################
+# Switch to ubuntu user for app setup
+########################################
+
+sudo -u ubuntu bash <<'EOF'
+
+cd /home/ubuntu
+
+########################################
+# Clone repository
+########################################
+
+git clone https://github.com/SajidaLaskar786/Risk_Prediction_Project.git
+
+########################################
+# Fix permissions
+########################################
+
+chmod o+x /home/ubuntu
+chmod -R 755 /home/ubuntu/Risk_Prediction_Project
+
+########################################
+# Backend setup
+########################################
+
+cd /home/ubuntu/Risk_Prediction_Project/api
+
+python3 -m venv venv
+
+source venv/bin/activate
+
+pip install --upgrade pip
+
+pip install -r requirement.txt
+
+pip install gunicorn uvicorn
+
+########################################
+# Frontend setup
+########################################
+
+cd /home/ubuntu/Risk_Prediction_Project/UI
+
+npm install
+
+npm run build
+
+EOF
+
+########################################
+# Create systemd service
+########################################
+# sudo nano /etc/systemd/system/risk-prediction-backend.service
+sudo tee /etc/systemd/system/risk-prediction-backend.service > /dev/null <<'EOF'
+[Unit]
+Description=FastAPI Backend
+After=network.target
+
+[Service]
+User=ubuntu
+WorkingDirectory=/home/ubuntu/Risk_Prediction_Project
+Environment="PATH=/home/ubuntu/Risk_Prediction_Project/venv/bin"
+ExecStart=/home/ubuntu/Risk_Prediction_Project/venv/bin/gunicorn \
+  -w 4 \
+  -k uvicorn.workers.UvicornWorker \
+  -b 0.0.0.0:8000 \
+  api.main:app
+
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+########################################
+# Enable backend service
+########################################
+
+sudo systemctl daemon-reload
+sudo systemctl enable risk-prediction-backend
+sudo systemctl start risk-prediction-backend
+# sudo systemctl status risk-prediction-backend
+# sudo journalctl -u risk-prediction-backend -f
+# sudo journalctl -u risk-prediction-backend -n 200 --no-pager
+########################################
+# Configure nginx
+########################################
+
+sudo rm -f /etc/nginx/sites-enabled/default
+
+# sudo nano /etc/nginx/sites-available/riskpredictionapp 
+
+sudo tee /etc/nginx/sites-available/riskpredictionapp > /dev/null <<'EOF'
+server {
+    listen 80;
+    server_name _;
+
+    root /home/ubuntu/Risk_Prediction_Project/UI/build;
+    index index.html;
+
+    location / {
+        try_files $uri /index.html;
+    }
+
+    location /api/ {
+        proxy_pass http://127.0.0.1:8000/;
+
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+    }
+}
+EOF
+
+########################################
+# Enable nginx config
+########################################
+
+sudo ln -sf /etc/nginx/sites-available/riskpredictionapp /etc/nginx/sites-enabled/riskpredictionapp
+
+########################################
+# Test and restart nginx
+########################################
+
+sudo nginx -t
+
+sudo systemctl restart nginx
+
+echo "EC2 setup completed successfully!"
