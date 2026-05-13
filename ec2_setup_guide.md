@@ -203,7 +203,7 @@ chmod -R 755 /home/ubuntu/Risk_Prediction_Project
 # 11. Backend Setup
 
 ```bash
-cd /home/ubuntu/Risk_Prediction_Project/api
+cd /home/ubuntu/Risk_Prediction_Project
 
 python3 -m venv venv
 
