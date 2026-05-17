@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import ashaImg from "../assets/asha.png";
 import {
   Home,
@@ -10,6 +11,7 @@ import {
 } from "lucide-react";
 
 function Sidebar() {
+  const navigate = useNavigate();
   return (
     <div className="hidden md:flex flex-col w-[260px] bg-white border-r min-h-screen p-5">
 
@@ -30,27 +32,31 @@ function Sidebar() {
           Dashboard
         </button>
 
-        <button className="flex items-center gap-3 hover:bg-gray-100 p-4 rounded-2xl">
+        <button
+          onClick={() => navigate("/predict")}
+          className="flex items-center gap-3 hover:bg-gray-100 p-4 rounded-2xl"
+        >
           <Activity size={22} />
           Predict Maternal Risk
         </button>
 
-        <button className="flex items-center gap-3 hover:bg-gray-100 p-4 rounded-2xl">
+        <button className="flex items-center gap-3 hover:bg-gray-100 p-4 rounded-2xl" onClick={() => navigate("/about-anemia")}>
           <Droplets size={22} />
           About Anemia
+         
         </button>
 
-        <button className="flex items-center gap-3 hover:bg-gray-100 p-4 rounded-2xl">
+        <button className="flex items-center gap-3 hover:bg-gray-100 p-4 rounded-2xl" onClick={() => navigate("/about-gdm")}>
           <HeartPulse size={22} />
           About GDM
         </button>
 
-        <button className="flex items-center gap-3 hover:bg-gray-100 p-4 rounded-2xl">
+        <button className="flex items-center gap-3 hover:bg-gray-100 p-4 rounded-2xl" onClick={() => navigate("/about-system")}>
           <Info size={22} />
           About Our System
         </button>
 
-        <button className="flex items-center gap-3 hover:bg-gray-100 p-4 rounded-2xl">
+        <button className="flex items-center gap-3 hover:bg-gray-100 p-4 rounded-2xl" onClick={() => navigate("/how-to-use")}>
           <HelpCircle size={22} />
           How To Use
         </button>

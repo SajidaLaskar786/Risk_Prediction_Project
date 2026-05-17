@@ -1,5 +1,5 @@
 import React from "react";
-import reminderImg from "../assets/reminder.png";
+import reminderGif from "../assets/reminder.gif";
 
 function ReminderCard() {
   return (
@@ -9,7 +9,7 @@ function ReminderCard() {
       <div className="flex justify-center">
 
         <img
-            src={reminderImg}
+            src={reminderGif}
             alt="Reminder"
             className="w-24 h-24 object-contain rounded-2xl"
         />

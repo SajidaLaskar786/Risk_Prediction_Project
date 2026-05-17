@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import predictImg from "../assets/predict.png";
 
 function PredictPage() {
     const navigate = useNavigate();
@@ -36,13 +37,25 @@ function PredictPage() {
   });
 
   const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
 
-    setFormData({
-      ...formData,
-      [name]: type === "checkbox" ? checked : value,
-    });
-  };
+  const { name, value } = e.target;
+
+  let finalValue = value;
+
+  // convert true/false strings to boolean
+  if (value === "true") {
+    finalValue = true;
+  }
+
+  else if (value === "false") {
+    finalValue = false;
+  }
+
+  setFormData({
+    ...formData,
+    [name]: finalValue
+  });
+};
 
   const handleSubmit = async () => {
     try {
@@ -85,43 +98,69 @@ function PredictPage() {
       {/* HEADER */}
       <div className="max-w-3xl mx-auto">
 
-        <h1 className="text-3xl font-bold text-green-800">
-          Maternal Risk Prediction
-        </h1>
+  {/* HEADER */}
+  <div className="mb-2 flex flex-col md:flex-row items-center justify-between gap-6">
 
-        <p className="text-gray-600 mt-2">
-          Enter patient information carefully
-        </p>
+  {/* LEFT TEXT */}
+  <div className="flex-1">
 
-        {/* TABS */}
-        <div className="flex bg-white rounded-2xl p-2 mt-6 shadow-md">
+    <p className="text-green-700 font-semibold text-sm uppercase tracking-wide">
+      Maternal Health Screening
+    </p>
 
-          <button
-            onClick={() => setActiveTab("gdm")}
-            className={`flex-1 py-3 rounded-xl font-semibold transition ${
-              activeTab === "gdm"
-                ? "bg-green-600 text-white"
-                : "text-gray-600"
-            }`}
-          >
-            GDM Details
-          </button>
+    <h1 className="text-4xl font-bold text-[#1f3d2b] mt-2 leading-tight">
+      Predict Maternal Risk
+    </h1>
 
-          <button
-            onClick={() => setActiveTab("anemia")}
-            className={`flex-1 py-3 rounded-xl font-semibold transition ${
-              activeTab === "anemia"
-                ? "bg-green-600 text-white"
-                : "text-gray-600"
-            }`}
-          >
-            Anemia Details
-          </button>
+    <p className="text-gray-500 mt-3 text-lg">
+      Fill patient information carefully to assess
+      GDM and Anemia risk.
+    </p>
 
-        </div>
+  </div>
+
+  {/* RIGHT IMAGE */}
+  <div className="flex justify-center">
+
+    <img
+      src={predictImg}
+      alt="Maternal Health"
+      className="w-32 md:w-40 object-contain"
+    />
+
+  </div>
+
+</div>
+
+  {/* TABS */}
+  <div className="bg-white rounded-3xl p-2 shadow-md flex gap-2">
+
+    <button
+      onClick={() => setActiveTab("gdm")}
+      className={`flex-1 py-4 rounded-2xl font-semibold transition-all duration-300 ${
+        activeTab === "gdm"
+          ? "bg-[#2d6a4f] text-white shadow-md"
+          : "text-gray-600 hover:bg-gray-100"
+      }`}
+    >
+      GDM Details
+    </button>
+
+    <button
+      onClick={() => setActiveTab("anemia")}
+      className={`flex-1 py-4 rounded-2xl font-semibold transition-all duration-300 ${
+        activeTab === "anemia"
+          ? "bg-[#2d6a4f] text-white shadow-md"
+          : "text-gray-600 hover:bg-gray-100"
+      }`}
+    >
+      Anemia Details
+    </button>
+
+  </div>
 
         {/* FORM CARD */}
-        <div className="bg-white rounded-3xl shadow-xl p-6 mt-6">
+        <div className="bg-white rounded-[32px] shadow-lg p-6 md:p-8 mt-6 border border-[#edf2ee]">
 
           {/* ================= GDM ================= */}
           {activeTab === "gdm" && (
@@ -140,7 +179,7 @@ function PredictPage() {
               </div>
 
               <div>
-                <label className="font-medium">Gravida</label>
+                <label className="font-medium">Gravida (Number of Pregnancies)</label>
                 <input
                   type="number"
                   name="gravida"
@@ -152,7 +191,7 @@ function PredictPage() {
               </div>
 
               <div>
-                <label className="font-medium">Gestational Weeks</label>
+                <label className="font-medium">Gestational Age (Weeks)</label>
                 <input
                   type="number"
                   name="gest_weeks"
@@ -163,38 +202,62 @@ function PredictPage() {
                 />
               </div>
 
-              <label className="flex items-center gap-3">
-                <input
-                  type="checkbox"
-                  name="prev_gdm"
-                  checked={formData.prev_gdm}
-                  onChange={handleChange}
-                />
+              {/* PREVIOUS GDM */}
+            <div>
+              <label className="font-medium text-gray-700">
                 Previous GDM
               </label>
 
-              <label className="flex items-center gap-3">
-                <input
-                  type="checkbox"
-                  name="family"
-                  checked={formData.family}
-                  onChange={handleChange}
-                />
+              <select
+                name="prev_gdm"
+                value={formData.prev_gdm}
+                onChange={handleChange}
+                className="w-full mt-2 p-4 rounded-2xl border border-gray-200 focus:outline-none focus:ring-4 focus:ring-green-100 focus:border-[#2d6a4f] transition"
+              >
+                <option value="">Select</option>
+                <option value="true">Yes</option>
+                <option value="false">No</option>
+              </select>
+            </div>
+
+            {/* FAMILY HISTORY */}
+            <div>
+              <label className="font-medium text-gray-700">
                 Family History of Diabetes
               </label>
 
-              <label className="flex items-center gap-3">
-                <input
-                  type="checkbox"
-                  name="pcod"
-                  checked={formData.pcod}
-                  onChange={handleChange}
-                />
-                PCOD / PCOS
+              <select
+                name="family"
+                value={formData.family}
+                onChange={handleChange}
+                className="w-full mt-2 p-4 rounded-2xl border border-gray-200 focus:outline-none focus:ring-4 focus:ring-green-100 focus:border-[#2d6a4f] transition"
+              >
+                <option value="">Select</option>
+                <option value="true">Yes</option>
+                <option value="false">No</option>
+              </select>
+            </div>
+
+            {/* PCOD */}
+            <div>
+              <label className="font-medium text-gray-700">
+                PCOD
               </label>
 
+              <select
+                name="pcod"
+                value={formData.pcod}
+                onChange={handleChange}
+                className="w-full mt-2 p-4 rounded-2xl border border-gray-200 focus:outline-none focus:ring-4 focus:ring-green-100 focus:border-[#2d6a4f] transition"
+              >
+                <option value="">Select</option>
+                <option value="true">Yes</option>
+                <option value="false">No</option>
+              </select>
+            </div>
+
               <div>
-                <label className="font-medium">Waist Circumference</label>
+                <label className="font-medium">Waist Circumference (cm)</label>
                 <input
                   type="number"
                   name="waist"
@@ -249,49 +312,81 @@ function PredictPage() {
                 </select>
               </div>
 
-              <label className="flex items-center gap-3">
-                <input
-                  type="checkbox"
+              {/* EXCESS THIRST */}
+              <div>
+                <label className="font-medium text-gray-700">
+                  Excess Thirst
+                </label>
+
+                <select
                   name="thirst"
-                  checked={formData.thirst}
+                  value={formData.thirst}
                   onChange={handleChange}
-                />
-                Excess Thirst
-              </label>
+                  className="w-full mt-2 p-4 rounded-2xl border border-gray-200 focus:outline-none focus:ring-4 focus:ring-green-100 focus:border-[#2d6a4f] transition"
+                >
+                  <option value="">Select</option>
+                  <option value="true">Yes</option>
+                  <option value="false">No</option>
+                </select>
+              </div>
 
-              <label className="flex items-center gap-3">
-                <input
-                  type="checkbox"
+              {/* FREQUENT URINATION */}
+              <div>
+                <label className="font-medium text-gray-700">
+                  Frequent Urination
+                </label>
+
+                <select
                   name="urination"
-                  checked={formData.urination}
+                  value={formData.urination}
                   onChange={handleChange}
-                />
-                Frequent Urination
-              </label>
+                  className="w-full mt-2 p-4 rounded-2xl border border-gray-200 focus:outline-none focus:ring-4 focus:ring-green-100 focus:border-[#2d6a4f] transition"
+                >
+                  <option value="">Select</option>
+                  <option value="true">Yes</option>
+                  <option value="false">No</option>
+                </select>
+              </div>
 
-              <label className="flex items-center gap-3">
-                <input
-                  type="checkbox"
+              {/* EXCESS HUNGER */}
+              <div>
+                <label className="font-medium text-gray-700">
+                  Excess Hunger
+                </label>
+
+                <select
                   name="hunger"
-                  checked={formData.hunger}
+                  value={formData.hunger}
                   onChange={handleChange}
-                />
-                Excess Hunger
-              </label>
+                  className="w-full mt-2 p-4 rounded-2xl border border-gray-200 focus:outline-none focus:ring-4 focus:ring-green-100 focus:border-[#2d6a4f] transition"
+                >
+                  <option value="">Select</option>
+                  <option value="true">Yes</option>
+                  <option value="false">No</option>
+                </select>
+              </div>
 
-              <label className="flex items-center gap-3">
-                <input
-                  type="checkbox"
-                  name="dark"
-                  checked={formData.dark}
-                  onChange={handleChange}
-                />
+              {/* DARK SKIN PATCHES */}
+            <div>
+              <label className="font-medium text-gray-700">
                 Dark Skin Patches
               </label>
 
+              <select
+                name="dark"
+                value={formData.dark}
+                onChange={handleChange}
+                className="w-full mt-2 p-4 rounded-2xl border border-gray-200 focus:outline-none focus:ring-4 focus:ring-green-100 focus:border-[#2d6a4f] transition"
+              >
+                <option value="">Select</option>
+                <option value="true">Yes</option>
+                <option value="false">No</option>
+              </select>
+            </div>
+
               <button
                 onClick={() => setActiveTab("anemia")}
-                className="w-full bg-[#388e55] text-white py-4 rounded-2xl font-semibold mt-4"
+                className="w-full bg-[#2d6a4f] text-white py-4 rounded-2xl font-semibold mt-4"
               >
                 Next → Anemia Details
               </button>
@@ -359,45 +454,76 @@ function PredictPage() {
                 </select>
               </div>
 
-              <label className="flex items-center gap-3">
-                <input
-                  type="checkbox"
+              <div>
+                <label className="font-medium text-gray-700">
+                  Fatigue
+                </label>
+
+                <select
                   name="fatigue"
-                  checked={formData.fatigue}
+                  value={formData.fatigue}
                   onChange={handleChange}
-                />
-                Fatigue
-              </label>
+                  className="w-full mt-2 p-4 rounded-2xl border border-gray-200 focus:outline-none focus:ring-4 focus:ring-green-100 focus:border-[#2d6a4f] transition"
+                >
+                  <option value="">Select</option>
+                  <option value="true">Yes</option>
+                  <option value="false">No</option>
+                </select>
+              </div>
 
-              <label className="flex items-center gap-3">
-                <input
-                  type="checkbox"
+              {/* DIZZINESS */}
+              <div>
+                <label className="font-medium text-gray-700">
+                  Dizziness
+                </label>
+
+                <select
                   name="dizziness"
-                  checked={formData.dizziness}
+                  value={formData.dizziness}
                   onChange={handleChange}
-                />
-                Dizziness
-              </label>
+                  className="w-full mt-2 p-4 rounded-2xl border border-gray-200 focus:outline-none focus:ring-4 focus:ring-green-100 focus:border-[#2d6a4f] transition"
+                >
+                  <option value="">Select</option>
+                  <option value="true">Yes</option>
+                  <option value="false">No</option>
+                </select>
+              </div>
 
-              <label className="flex items-center gap-3">
-                <input
-                  type="checkbox"
+              {/* PALE EYELIDS */}
+              <div>
+                <label className="font-medium text-gray-700">
+                  Pale Eyelids
+                </label>
+
+                <select
                   name="pale_eyelids"
-                  checked={formData.pale_eyelids}
+                  value={formData.pale_eyelids}
                   onChange={handleChange}
-                />
-                Pale Eyelids
-              </label>
+                  className="w-full mt-2 p-4 rounded-2xl border border-gray-200 focus:outline-none focus:ring-4 focus:ring-green-100 focus:border-[#2d6a4f] transition"
+                >
+                  <option value="">Select</option>
+                  <option value="true">Yes</option>
+                  <option value="false">No</option>
+                </select>
+              </div>
 
-              <label className="flex items-center gap-3">
-                <input
-                  type="checkbox"
+              {/* PALE NAILS */}
+              <div>
+                <label className="font-medium text-gray-700">
+                  Pale Nails
+                </label>
+
+                <select
                   name="pale_nails"
-                  checked={formData.pale_nails}
+                  value={formData.pale_nails}
                   onChange={handleChange}
-                />
-                Pale Nails
-              </label>
+                  className="w-full mt-2 p-4 rounded-2xl border border-gray-200 focus:outline-none focus:ring-4 focus:ring-green-100 focus:border-[#2d6a4f] transition"
+                >
+                  <option value="">Select</option>
+                  <option value="true">Yes</option>
+                  <option value="false">No</option>
+                </select>
+              </div>
 
               <div>
                 <label className="font-medium">Tongue Color</label>
@@ -415,19 +541,27 @@ function PredictPage() {
                 </select>
               </div>
 
-              <label className="flex items-center gap-3">
-                <input
-                  type="checkbox"
+              {/* ANEMIA HISTORY */}
+              <div>
+                <label className="font-medium text-gray-700">
+                  Anemia History
+                </label>
+
+                <select
                   name="history"
-                  checked={formData.history}
+                  value={formData.history}
                   onChange={handleChange}
-                />
-                Anemia History
-              </label>
+                  className="w-full mt-2 p-4 rounded-2xl border border-gray-200 focus:outline-none focus:ring-4 focus:ring-green-100 focus:border-[#2d6a4f] transition"
+                >
+                  <option value="">Select</option>
+                  <option value="true">Yes</option>
+                  <option value="false">No</option>
+                </select>
+              </div>
 
               <button
                 onClick={handleSubmit}
-                className="w-full bg-[#388e55] text-white py-4 rounded-2xl font-semibold mt-4"
+                className="w-full bg-[#2d6a4f] text-white py-4 rounded-2xl font-semibold mt-4"
               >
                 Predict Maternal Risk
               </button>

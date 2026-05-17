@@ -1,6 +1,6 @@
 import React from "react";
 
-function InfoCard({ image, title, description, color }) {
+function InfoCard({ image, title, description, color, onClick }) {
   return (
     <div className={`${color} rounded-3xl p-6 shadow-xl hover:shadow-2xl transition duration-300`}>
 
@@ -31,7 +31,10 @@ function InfoCard({ image, title, description, color }) {
       {/* BUTTON */}
       <div className="flex justify-center">
 
-        <button className="mt-6 bg-white px-6 py-3 rounded-2xl font-semibold shadow-sm hover:scale-105 transition">
+        <button
+          onClick={onClick}
+          className="mt-6 bg-white px-6 py-3 rounded-2xl font-semibold shadow-sm hover:scale-105 transition"
+        >
             Learn More
         </button>
 

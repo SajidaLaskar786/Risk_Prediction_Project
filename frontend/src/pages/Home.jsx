@@ -9,6 +9,7 @@ import anemiaImg from "../assets/anemia.png";
 import gdmImg from "../assets/gdm.png";
 import { useNavigate } from "react-router-dom";
 
+
 function Home() {
     const navigate = useNavigate();
   return (
@@ -47,18 +48,20 @@ function Home() {
 
             {/* ANEMIA */}
             <InfoCard
-                image={anemiaImg}
-                title="Anemia"
-                description="Learn symptoms, causes, prevention and maternal risks related to anemia."
-                color="bg-blue-95"
-                />
+              image={anemiaImg}
+              title="Anemia"
+              description="Learn symptoms, causes, prevention and maternal risks related to anemia."
+              color="bg-blue-95"
+              onClick={() => navigate("/about-anemia")}
+            />
 
             {/* GDM */}
             <InfoCard
-            image={gdmImg}
-            title="Gestational Diabetes"
-            description="Understand GDM risks, symptoms and preventive maternal healthcare."
-            color="bg-blue-95"
+              image={gdmImg}
+              title="Gestational Diabetes"
+              description="Understand GDM risks, symptoms and preventive maternal healthcare."
+              color="bg-blue-95"
+              onClick={() => navigate("/about-gdm")}
             />
 
           </div>

@@ -4,6 +4,7 @@ import pregnantImg from "../assets/pregnant.png";
 import reportImg from "../assets/report.png";
 import { useNavigate } from "react-router-dom";
 
+
 function MainCard() {
     const navigate = useNavigate();
   return (
@@ -39,6 +40,7 @@ function MainCard() {
             <button
                 onClick={() => navigate("/predict")}
                 className="bg-[#388e55] text-white px-6 py-3 rounded-2xl font-semibold hover:scale-105 transition"
+                onClick={() => navigate("/predict")}
                 >
                 Start Prediction
             </button>
