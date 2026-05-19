@@ -1,67 +1,59 @@
+
 import React from "react";
-import { ArrowRight } from "lucide-react";
 import pregnantImg from "../assets/pregnant.png";
-import reportImg from "../assets/report.png";
 import { useNavigate } from "react-router-dom";
 
-
 function MainCard() {
-    const navigate = useNavigate();
-  return (
-    <div className="bg-[#b2cdb8] rounded-3xl p-6 shadow-sm">
 
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+  const navigate = useNavigate();
 
-        {/* LEFT SECTION */}
-        <div className="flex items-start gap-10">
+  
+return (
 
-        {/* ICON */}
-        <div className="flex justify-center">
-            <img
-            src={reportImg}
-            alt="Report"
-            className="w-[70px] md:w-[100px] object-cover rounded-3xl"
-            />
-        </div>
+  <div className="bg-[#eef6ef] rounded-3xl p-6 md:p-8 shadow-sm overflow-hidden">
 
-          {/* TEXT */}
-          <div>
+    <div className="flex flex-col lg:flex-row items-center justify-between gap-8">
 
-            <h2 className="text-2xl font-bold text-green-700">
-              Predict Maternal Risk
-            </h2>
+      {/* LEFT */}
+      <div className="flex-1 text-center lg:text-left">
 
-            <p className="text-gray-600 mt-3 leading-7 max-w-[400px]">
-              Assess risk of Anemia and Gestational Diabetes Mellitus (GDM)
-              using AI-powered prediction.
-            </p>
+        <h2 className="text-3xl md:text-4xl font-bold text-green-900 leading-tight">
+          Predict Maternal Risk
+        </h2>
 
-            {/* BUTTON */}
-            <button
-                onClick={() => navigate("/predict")}
-                className="bg-[#388e55] text-white px-6 py-3 rounded-2xl font-semibold hover:scale-105 transition"
-                onClick={() => navigate("/predict")}
-                >
-                Start Prediction
-            </button>
+        <p className="text-gray-700 mt-4 leading-7 max-w-[420px] text-base md:text-lg mx-auto lg:mx-0">
+          Assess risk of Anemia and Gestational Diabetes Mellitus (GDM)
+          using AI-powered prediction.
+        </p>
 
-          </div>
+      </div>
 
-        </div>
+      {/* RIGHT */}
+      <div className="flex flex-col items-center gap-4">
 
-        {/* RIGHT SIDE */}
-        <div className="flex justify-center">
-            <img
-                src={pregnantImg}
-                alt="Pregnant Woman"
-                className="w-[220px] md:w-[280px] object-cover rounded-3xl"
-            />
-        </div>
+        <img
+          src={pregnantImg}
+          alt="Pregnant Woman"
+          className="w-[170px] md:w-[230px] object-contain"
+        />
+
+        <button
+          onClick={() => navigate("/predict")}
+          className="bg-[#388e55] text-white px-7 py-4 rounded-2xl font-semibold hover:scale-105 transition"
+        >
+          Start Prediction
+        </button>
 
       </div>
 
     </div>
-  );
+
+  </div>
+
+);
+
+
 }
 
 export default MainCard;
+

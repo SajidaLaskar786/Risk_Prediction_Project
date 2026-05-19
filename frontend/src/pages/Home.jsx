@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import Sidebar from "../components/Sidebar";
 import Topbar from "../components/Topbar";
@@ -12,17 +12,44 @@ import { useNavigate } from "react-router-dom";
 
 function Home() {
     const navigate = useNavigate();
+    const [showSidebar, setShowSidebar] = useState(false);
   return (
     <div className="bg-[#f5f9f6] min-h-screen flex">
 
       {/* SIDEBAR */}
+      
+{/* DESKTOP SIDEBAR */}
+<div className="hidden md:block">
+  <Sidebar />
+</div>
+
+{/* MOBILE SIDEBAR */}
+{showSidebar && (
+
+  <div className="fixed inset-0 z-50 flex">
+
+    {/* OVERLAY */}
+    <div
+      className="absolute inset-0 bg-black/40"
+      onClick={() => setShowSidebar(false)}
+    />
+
+    {/* DRAWER */}
+    <div className="relative z-50">
       <Sidebar />
+    </div>
+
+  </div>
+
+)}
+
+
 
       {/* MAIN CONTENT */}
       <div className="flex-1 p-4 md:p-8">
 
         {/* TOPBAR */}
-        <Topbar />
+        <Topbar setShowSidebar={setShowSidebar} />
 
         {/* CONTENT */}
         <div className="mt-8">
@@ -30,11 +57,16 @@ function Home() {
           {/* TITLE */}
           <div className="mb-6">
 
-            <h2 className="text-3xl font-bold text-gray-800">
+            
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-800 leading-tight">
+
+
               What would you like to do today?
             </h2>
 
-            <p className="text-gray-500 mt-2">
+            
+<p className="text-gray-500 mt-2 text-base md:text-lg">
+
               Select an option below to continue
             </p>
 

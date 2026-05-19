@@ -13,7 +13,7 @@ import {
 function Sidebar() {
   const navigate = useNavigate();
   return (
-    <div className="hidden md:flex flex-col w-[260px] bg-white border-r min-h-screen p-5">
+    <div className="flex flex-col w-[260px] bg-white border-r min-h-screen p-5">
 
       {/* LOGO */}
       <div className="mb-10">
@@ -63,15 +63,15 @@ function Sidebar() {
 
       </div>
       {/* ASHA IMAGE */}
-<div className="mt-auto flex justify-center pt-10">
+    <div className="mt-auto flex justify-center pt-10">
 
-  <img
-    src={ashaImg}
-    alt="ASHA Worker"
-    className="w-[220px] md:w-[280px] object-cover rounded-3xl"
-  />
+      <img
+        src={ashaImg}
+        alt="ASHA Worker"
+        className="w-[170px] object-contain rounded-3xl"
+      />
 
-</div>
+    </div>
 
     </div>
   );

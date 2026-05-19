@@ -32,7 +32,7 @@ function AboutGDM() {
           <img
             src={gdmImg}
             alt="GDM"
-            className="w-40 "
+            className="w-32 "
           />
 
           <h1 className="text-3xl font-bold text-[#1f3d2b] mt-5">
